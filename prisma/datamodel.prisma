@@ -1,0 +1,44 @@
+type Link {
+  id: ID! @id
+  createdAt: DateTime! @createdAt
+  description: String!
+  url: String!
+}
+
+type User {
+    id: ID! @id
+    firstName: String!
+    lastName: String!
+    email: String! @unique
+    username: String!
+    password: String!
+    messages: [Message!]
+    communities: [Community!]
+    posts: [Post!]    
+}
+
+type Community {
+    id: ID! @id
+    name: String!
+    category: String!
+    posts: [Post!]
+    users: [User!]
+    hasPosts: Boolean!
+    hasMessages: Boolean!
+    privacy: String!
+}
+
+type Post {
+    id: ID! @id
+    text: String!
+    community: Community!
+    user: User!
+}
+
+type Message {
+    id: ID! @id
+    sender: User!
+    recip: String!
+    content: String!
+    community: Community!
+}
