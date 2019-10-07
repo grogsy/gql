@@ -3,6 +3,7 @@ type Query {
     feed: [Link!]!
     getUsers: [User!]!
     getCommunitys: [Community!]!
+    getPosts: [Post!]!
 }
 
 type Mutation {

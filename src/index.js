@@ -12,6 +12,9 @@ const resolvers = {
     },
     getCommunitys: (root, args, ctx, info) => {
       return ctx.prisma.communitys();
+    },
+    getPosts: (root, args, ctx, info) => {
+      return ctx.prisma.posts();
     }
   },
 
@@ -61,6 +64,13 @@ const resolvers = {
         user: { connect: { id: user } },
         community: { connect: { id: community } }
       });
+    }
+  },
+
+  User: {
+    posts: (parent, args, ctx) => {
+      const { id } = parent;
+      return ctx.prisma.user({ id }).posts();
     }
   }
 };
