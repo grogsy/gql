@@ -383,6 +383,7 @@ input CommunityWhereInput {
 
 input CommunityWhereUniqueInput {
   id: ID
+  name: String
 }
 
 scalar DateTime
@@ -800,7 +801,7 @@ type PageInfo {
 
 type Post {
   id: ID!
-  text: String!
+  content: String!
   community: Community!
   user: User!
 }
@@ -813,7 +814,7 @@ type PostConnection {
 
 input PostCreateInput {
   id: ID
-  text: String!
+  content: String!
   community: CommunityCreateOneWithoutPostsInput!
   user: UserCreateOneWithoutPostsInput!
 }
@@ -830,13 +831,13 @@ input PostCreateManyWithoutUserInput {
 
 input PostCreateWithoutCommunityInput {
   id: ID
-  text: String!
+  content: String!
   user: UserCreateOneWithoutPostsInput!
 }
 
 input PostCreateWithoutUserInput {
   id: ID
-  text: String!
+  content: String!
   community: CommunityCreateOneWithoutPostsInput!
 }
 
@@ -848,13 +849,13 @@ type PostEdge {
 enum PostOrderByInput {
   id_ASC
   id_DESC
-  text_ASC
-  text_DESC
+  content_ASC
+  content_DESC
 }
 
 type PostPreviousValues {
   id: ID!
-  text: String!
+  content: String!
 }
 
 input PostScalarWhereInput {
@@ -872,20 +873,20 @@ input PostScalarWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
-  text: String
-  text_not: String
-  text_in: [String!]
-  text_not_in: [String!]
-  text_lt: String
-  text_lte: String
-  text_gt: String
-  text_gte: String
-  text_contains: String
-  text_not_contains: String
-  text_starts_with: String
-  text_not_starts_with: String
-  text_ends_with: String
-  text_not_ends_with: String
+  content: String
+  content_not: String
+  content_in: [String!]
+  content_not_in: [String!]
+  content_lt: String
+  content_lte: String
+  content_gt: String
+  content_gte: String
+  content_contains: String
+  content_not_contains: String
+  content_starts_with: String
+  content_not_starts_with: String
+  content_ends_with: String
+  content_not_ends_with: String
   AND: [PostScalarWhereInput!]
   OR: [PostScalarWhereInput!]
   NOT: [PostScalarWhereInput!]
@@ -910,17 +911,17 @@ input PostSubscriptionWhereInput {
 }
 
 input PostUpdateInput {
-  text: String
+  content: String
   community: CommunityUpdateOneRequiredWithoutPostsInput
   user: UserUpdateOneRequiredWithoutPostsInput
 }
 
 input PostUpdateManyDataInput {
-  text: String
+  content: String
 }
 
 input PostUpdateManyMutationInput {
-  text: String
+  content: String
 }
 
 input PostUpdateManyWithoutCommunityInput {
@@ -953,12 +954,12 @@ input PostUpdateManyWithWhereNestedInput {
 }
 
 input PostUpdateWithoutCommunityDataInput {
-  text: String
+  content: String
   user: UserUpdateOneRequiredWithoutPostsInput
 }
 
 input PostUpdateWithoutUserDataInput {
-  text: String
+  content: String
   community: CommunityUpdateOneRequiredWithoutPostsInput
 }
 
@@ -999,20 +1000,20 @@ input PostWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
-  text: String
-  text_not: String
-  text_in: [String!]
-  text_not_in: [String!]
-  text_lt: String
-  text_lte: String
-  text_gt: String
-  text_gte: String
-  text_contains: String
-  text_not_contains: String
-  text_starts_with: String
-  text_not_starts_with: String
-  text_ends_with: String
-  text_not_ends_with: String
+  content: String
+  content_not: String
+  content_in: [String!]
+  content_not_in: [String!]
+  content_lt: String
+  content_lte: String
+  content_gt: String
+  content_gte: String
+  content_contains: String
+  content_not_contains: String
+  content_starts_with: String
+  content_not_starts_with: String
+  content_ends_with: String
+  content_not_ends_with: String
   community: CommunityWhereInput
   user: UserWhereInput
   AND: [PostWhereInput!]

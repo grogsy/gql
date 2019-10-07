@@ -10,8 +10,7 @@ type Mutation {
     createUser(username: String!, firstName: String!, lastName: String!, email: String!, password: String!) : User
     login(email: String!, password: String!) : User #AuthPayload
     createCommunity(name: String!, category: String!, hasPosts: Boolean!, hasMessages: Boolean!, privacy: String!) : Community
-    updateLink(id: ID!, url: String, description: String) : Link
-    deleteLink(id: ID!) : Link
+    createPost(user: String!, community: String!, content: String!) : Post!
 }
 
 type AuthPayload {
@@ -47,7 +46,7 @@ type Community {
 }
 
 type Post {
-    text: String!
+    content: String!
     community: Community!
     user: User!
 }

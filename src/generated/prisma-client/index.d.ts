@@ -257,7 +257,11 @@ export interface ClientConstructor<T> {
  * Types
  */
 
-export type PostOrderByInput = "id_ASC" | "id_DESC" | "text_ASC" | "text_DESC";
+export type PostOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "content_ASC"
+  | "content_DESC";
 
 export type MessageOrderByInput =
   | "id_ASC"
@@ -314,6 +318,7 @@ export interface UserUpdateWithWhereUniqueWithoutCommunitiesInput {
 
 export type CommunityWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
+  name?: Maybe<String>;
 }>;
 
 export interface CommunityCreateOneWithoutPostsInput {
@@ -339,7 +344,7 @@ export interface CommunityCreateWithoutPostsInput {
 }
 
 export interface PostUpdateWithoutUserDataInput {
-  text?: Maybe<String>;
+  content?: Maybe<String>;
   community?: Maybe<CommunityUpdateOneRequiredWithoutPostsInput>;
 }
 
@@ -563,7 +568,7 @@ export interface CommunityWhereInput {
 }
 
 export interface PostUpdateWithoutCommunityDataInput {
-  text?: Maybe<String>;
+  content?: Maybe<String>;
   user?: Maybe<UserUpdateOneRequiredWithoutPostsInput>;
 }
 
@@ -641,7 +646,7 @@ export interface MessageUpdateManyWithoutSenderInput {
 
 export interface PostCreateInput {
   id?: Maybe<ID_Input>;
-  text: String;
+  content: String;
   community: CommunityCreateOneWithoutPostsInput;
   user: UserCreateOneWithoutPostsInput;
 }
@@ -934,20 +939,20 @@ export interface PostScalarWhereInput {
   id_not_starts_with?: Maybe<ID_Input>;
   id_ends_with?: Maybe<ID_Input>;
   id_not_ends_with?: Maybe<ID_Input>;
-  text?: Maybe<String>;
-  text_not?: Maybe<String>;
-  text_in?: Maybe<String[] | String>;
-  text_not_in?: Maybe<String[] | String>;
-  text_lt?: Maybe<String>;
-  text_lte?: Maybe<String>;
-  text_gt?: Maybe<String>;
-  text_gte?: Maybe<String>;
-  text_contains?: Maybe<String>;
-  text_not_contains?: Maybe<String>;
-  text_starts_with?: Maybe<String>;
-  text_not_starts_with?: Maybe<String>;
-  text_ends_with?: Maybe<String>;
-  text_not_ends_with?: Maybe<String>;
+  content?: Maybe<String>;
+  content_not?: Maybe<String>;
+  content_in?: Maybe<String[] | String>;
+  content_not_in?: Maybe<String[] | String>;
+  content_lt?: Maybe<String>;
+  content_lte?: Maybe<String>;
+  content_gt?: Maybe<String>;
+  content_gte?: Maybe<String>;
+  content_contains?: Maybe<String>;
+  content_not_contains?: Maybe<String>;
+  content_starts_with?: Maybe<String>;
+  content_not_starts_with?: Maybe<String>;
+  content_ends_with?: Maybe<String>;
+  content_not_ends_with?: Maybe<String>;
   AND?: Maybe<PostScalarWhereInput[] | PostScalarWhereInput>;
   OR?: Maybe<PostScalarWhereInput[] | PostScalarWhereInput>;
   NOT?: Maybe<PostScalarWhereInput[] | PostScalarWhereInput>;
@@ -955,7 +960,7 @@ export interface PostScalarWhereInput {
 
 export interface PostCreateWithoutUserInput {
   id?: Maybe<ID_Input>;
-  text: String;
+  content: String;
   community: CommunityCreateOneWithoutPostsInput;
 }
 
@@ -976,7 +981,7 @@ export interface MessageSubscriptionWhereInput {
 }
 
 export interface PostUpdateManyDataInput {
-  text?: Maybe<String>;
+  content?: Maybe<String>;
 }
 
 export interface PostWhereInput {
@@ -994,20 +999,20 @@ export interface PostWhereInput {
   id_not_starts_with?: Maybe<ID_Input>;
   id_ends_with?: Maybe<ID_Input>;
   id_not_ends_with?: Maybe<ID_Input>;
-  text?: Maybe<String>;
-  text_not?: Maybe<String>;
-  text_in?: Maybe<String[] | String>;
-  text_not_in?: Maybe<String[] | String>;
-  text_lt?: Maybe<String>;
-  text_lte?: Maybe<String>;
-  text_gt?: Maybe<String>;
-  text_gte?: Maybe<String>;
-  text_contains?: Maybe<String>;
-  text_not_contains?: Maybe<String>;
-  text_starts_with?: Maybe<String>;
-  text_not_starts_with?: Maybe<String>;
-  text_ends_with?: Maybe<String>;
-  text_not_ends_with?: Maybe<String>;
+  content?: Maybe<String>;
+  content_not?: Maybe<String>;
+  content_in?: Maybe<String[] | String>;
+  content_not_in?: Maybe<String[] | String>;
+  content_lt?: Maybe<String>;
+  content_lte?: Maybe<String>;
+  content_gt?: Maybe<String>;
+  content_gte?: Maybe<String>;
+  content_contains?: Maybe<String>;
+  content_not_contains?: Maybe<String>;
+  content_starts_with?: Maybe<String>;
+  content_not_starts_with?: Maybe<String>;
+  content_ends_with?: Maybe<String>;
+  content_not_ends_with?: Maybe<String>;
   community?: Maybe<CommunityWhereInput>;
   user?: Maybe<UserWhereInput>;
   AND?: Maybe<PostWhereInput[] | PostWhereInput>;
@@ -1022,7 +1027,7 @@ export interface UserUpsertWithWhereUniqueWithoutCommunitiesInput {
 }
 
 export interface PostUpdateManyMutationInput {
-  text?: Maybe<String>;
+  content?: Maybe<String>;
 }
 
 export interface UserScalarWhereInput {
@@ -1269,7 +1274,7 @@ export interface MessageScalarWhereInput {
 
 export interface PostCreateWithoutCommunityInput {
   id?: Maybe<ID_Input>;
-  text: String;
+  content: String;
   user: UserCreateOneWithoutPostsInput;
 }
 
@@ -1505,7 +1510,7 @@ export interface UserUpsertWithoutPostsInput {
 }
 
 export interface PostUpdateInput {
-  text?: Maybe<String>;
+  content?: Maybe<String>;
   community?: Maybe<CommunityUpdateOneRequiredWithoutPostsInput>;
   user?: Maybe<UserUpdateOneRequiredWithoutPostsInput>;
 }
@@ -1579,39 +1584,33 @@ export interface UserPreviousValuesSubscription
   password: () => Promise<AsyncIterator<String>>;
 }
 
-export interface PostSubscriptionPayload {
-  mutation: MutationType;
-  node: Post;
-  updatedFields: String[];
-  previousValues: PostPreviousValues;
+export interface PostPreviousValues {
+  id: ID_Output;
+  content: String;
 }
 
-export interface PostSubscriptionPayloadPromise
-  extends Promise<PostSubscriptionPayload>,
+export interface PostPreviousValuesPromise
+  extends Promise<PostPreviousValues>,
     Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = PostPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = PostPreviousValuesPromise>() => T;
+  id: () => Promise<ID_Output>;
+  content: () => Promise<String>;
 }
 
-export interface PostSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<PostSubscriptionPayload>>,
+export interface PostPreviousValuesSubscription
+  extends Promise<AsyncIterator<PostPreviousValues>>,
     Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = PostSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = PostPreviousValuesSubscription>() => T;
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  content: () => Promise<AsyncIterator<String>>;
 }
 
 export interface Post {
   id: ID_Output;
-  text: String;
+  content: String;
 }
 
 export interface PostPromise extends Promise<Post>, Fragmentable {
   id: () => Promise<ID_Output>;
-  text: () => Promise<String>;
+  content: () => Promise<String>;
   community: <T = CommunityPromise>() => T;
   user: <T = UserPromise>() => T;
 }
@@ -1620,7 +1619,7 @@ export interface PostSubscription
   extends Promise<AsyncIterator<Post>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  text: () => Promise<AsyncIterator<String>>;
+  content: () => Promise<AsyncIterator<String>>;
   community: <T = CommunitySubscription>() => T;
   user: <T = UserSubscription>() => T;
 }
@@ -1629,7 +1628,7 @@ export interface PostNullablePromise
   extends Promise<Post | null>,
     Fragmentable {
   id: () => Promise<ID_Output>;
-  text: () => Promise<String>;
+  content: () => Promise<String>;
   community: <T = CommunityPromise>() => T;
   user: <T = UserPromise>() => T;
 }
@@ -1834,98 +1833,29 @@ export interface AggregateMessageSubscription
   count: () => Promise<AsyncIterator<Int>>;
 }
 
-export interface Community {
-  id: ID_Output;
-  name: String;
-  category: String;
-  hasPosts: Boolean;
-  hasMessages: Boolean;
-  privacy: String;
+export interface PostSubscriptionPayload {
+  mutation: MutationType;
+  node: Post;
+  updatedFields: String[];
+  previousValues: PostPreviousValues;
 }
 
-export interface CommunityPromise extends Promise<Community>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-  category: () => Promise<String>;
-  posts: <T = FragmentableArray<Post>>(args?: {
-    where?: PostWhereInput;
-    orderBy?: PostOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  users: <T = FragmentableArray<User>>(args?: {
-    where?: UserWhereInput;
-    orderBy?: UserOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  hasPosts: () => Promise<Boolean>;
-  hasMessages: () => Promise<Boolean>;
-  privacy: () => Promise<String>;
-}
-
-export interface CommunitySubscription
-  extends Promise<AsyncIterator<Community>>,
+export interface PostSubscriptionPayloadPromise
+  extends Promise<PostSubscriptionPayload>,
     Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
-  category: () => Promise<AsyncIterator<String>>;
-  posts: <T = Promise<AsyncIterator<PostSubscription>>>(args?: {
-    where?: PostWhereInput;
-    orderBy?: PostOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  users: <T = Promise<AsyncIterator<UserSubscription>>>(args?: {
-    where?: UserWhereInput;
-    orderBy?: UserOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  hasPosts: () => Promise<AsyncIterator<Boolean>>;
-  hasMessages: () => Promise<AsyncIterator<Boolean>>;
-  privacy: () => Promise<AsyncIterator<String>>;
+  mutation: () => Promise<MutationType>;
+  node: <T = PostPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = PostPreviousValuesPromise>() => T;
 }
 
-export interface CommunityNullablePromise
-  extends Promise<Community | null>,
+export interface PostSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<PostSubscriptionPayload>>,
     Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-  category: () => Promise<String>;
-  posts: <T = FragmentableArray<Post>>(args?: {
-    where?: PostWhereInput;
-    orderBy?: PostOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  users: <T = FragmentableArray<User>>(args?: {
-    where?: UserWhereInput;
-    orderBy?: UserOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  hasPosts: () => Promise<Boolean>;
-  hasMessages: () => Promise<Boolean>;
-  privacy: () => Promise<String>;
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = PostSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = PostPreviousValuesSubscription>() => T;
 }
 
 export interface MessageConnection {
@@ -2022,23 +1952,98 @@ export interface CommunityPreviousValuesSubscription
   privacy: () => Promise<AsyncIterator<String>>;
 }
 
-export interface PostPreviousValues {
+export interface Community {
   id: ID_Output;
-  text: String;
+  name: String;
+  category: String;
+  hasPosts: Boolean;
+  hasMessages: Boolean;
+  privacy: String;
 }
 
-export interface PostPreviousValuesPromise
-  extends Promise<PostPreviousValues>,
-    Fragmentable {
+export interface CommunityPromise extends Promise<Community>, Fragmentable {
   id: () => Promise<ID_Output>;
-  text: () => Promise<String>;
+  name: () => Promise<String>;
+  category: () => Promise<String>;
+  posts: <T = FragmentableArray<Post>>(args?: {
+    where?: PostWhereInput;
+    orderBy?: PostOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  users: <T = FragmentableArray<User>>(args?: {
+    where?: UserWhereInput;
+    orderBy?: UserOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  hasPosts: () => Promise<Boolean>;
+  hasMessages: () => Promise<Boolean>;
+  privacy: () => Promise<String>;
 }
 
-export interface PostPreviousValuesSubscription
-  extends Promise<AsyncIterator<PostPreviousValues>>,
+export interface CommunitySubscription
+  extends Promise<AsyncIterator<Community>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  text: () => Promise<AsyncIterator<String>>;
+  name: () => Promise<AsyncIterator<String>>;
+  category: () => Promise<AsyncIterator<String>>;
+  posts: <T = Promise<AsyncIterator<PostSubscription>>>(args?: {
+    where?: PostWhereInput;
+    orderBy?: PostOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  users: <T = Promise<AsyncIterator<UserSubscription>>>(args?: {
+    where?: UserWhereInput;
+    orderBy?: UserOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  hasPosts: () => Promise<AsyncIterator<Boolean>>;
+  hasMessages: () => Promise<AsyncIterator<Boolean>>;
+  privacy: () => Promise<AsyncIterator<String>>;
+}
+
+export interface CommunityNullablePromise
+  extends Promise<Community | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  category: () => Promise<String>;
+  posts: <T = FragmentableArray<Post>>(args?: {
+    where?: PostWhereInput;
+    orderBy?: PostOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  users: <T = FragmentableArray<User>>(args?: {
+    where?: UserWhereInput;
+    orderBy?: UserOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  hasPosts: () => Promise<Boolean>;
+  hasMessages: () => Promise<Boolean>;
+  privacy: () => Promise<String>;
 }
 
 export interface Message {
@@ -2445,11 +2450,6 @@ The `Int` scalar type represents non-fractional signed whole numeric values. Int
 export type Int = number;
 
 /*
-The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
-*/
-export type String = string;
-
-/*
 DateTime scalar input type, allowing Date
 */
 export type DateTimeInput = Date | string;
@@ -2458,6 +2458,11 @@ export type DateTimeInput = Date | string;
 DateTime scalar output type, which is always a string
 */
 export type DateTimeOutput = string;
+
+/*
+The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
+*/
+export type String = string;
 
 /**
  * Model Metadata

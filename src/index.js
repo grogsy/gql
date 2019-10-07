@@ -35,7 +35,6 @@ const resolvers = {
     },
     createCommunity: (root, args, ctx) => {
       const { name, category, hasPosts, hasMessages, privacy } = args;
-      console.log(hasMessages);
       return ctx.prisma.createCommunity({
         name,
         category,
@@ -53,6 +52,15 @@ const resolvers = {
       }
 
       return user;
+    },
+    createPost: (root, args, ctx, info) => {
+      const { user, community, content } = args;
+
+      return ctx.prisma.createPost({
+        content,
+        user: { connect: { id: user } },
+        community: { connect: { id: community } }
+      });
     }
   }
 };
