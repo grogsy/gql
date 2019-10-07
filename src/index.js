@@ -1,68 +1,68 @@
-const { GraphQLServer } = require('graphql-yoga');
-const { prisma } = require('./generated/prisma-client');
+const { GraphQLServer } = require("graphql-yoga");
+const { prisma } = require("./generated/prisma-client");
 
-let links = [
-  {
-    id: 'link-0',
-    url: 'www.howtographql.com',
-    description: 'real neat descip',
-  },
-  {
-    id: 'link-1',
-    url: 'www.google.com',
-    description: 'goog',
-  },
-];
-
-let idCount = links.length;
 const resolvers = {
   Query: {
-    info: () => `HN API`,
-    feed: () => links,
-    link: (parent, args) => {
-      const { id } = args;
-      const l = links.filter(link => link.id === id)[0];
-      return l;
+    info: () => "Example API",
+    feed: (root, args, ctx, info) => {
+      return ctx.prisma.links();
     },
-  },
-
-  Link: {
-    id: parent => parent.id,
-    description: parent => parent.description,
-    url: parent => parent.url,
+    getUsers: (root, args, ctx, info) => {
+      return ctx.prisma.users();
+    },
+    getCommunitys: (root, args, ctx, info) => {
+      return ctx.prisma.communitys();
+    }
   },
 
   Mutation: {
-    signup: async (parent, args, context, info) => {
-      const user = await context.prisma.createUser({ ...args });
-      return { user };
+    post: (root, args, ctx) => {
+      const { url, description } = args;
+      return ctx.prisma.createLink({
+        url,
+        description
+      });
     },
-    post: (parent, args) => {
-      const link = {
-        id: `link-${idCount++}`,
-        description: args.description,
-        url: args.url,
-      };
-      links.push(link);
-      return link;
+    createUser: (root, args, ctx) => {
+      const { firstName, lastName, email, password, username } = args;
+      return ctx.prisma.createUser({
+        firstName,
+        lastName,
+        email,
+        password,
+        username
+      });
     },
-    updateLink: (parent, args) => {
-      const { id, url, description } = args;
-      for (let i = 0; i < links.length; i++) {
-        let thisLink = links[i];
-        if (thisLink.id === id) {
-          const updatedLink = { id, url, description };
-          links[i] = updatedLink;
-          return updatedLink;
-        }
+    createCommunity: (root, args, ctx) => {
+      const { name, category, hasPosts, hasMessages, privacy } = args;
+      console.log(hasMessages);
+      return ctx.prisma.createCommunity({
+        name,
+        category,
+        hasMessages,
+        hasPosts,
+        privacy
+      });
+    },
+    login: async (parent, args, ctx, info) => {
+      const { email, password } = args;
+      const user = await ctx.prisma.user({ email });
+
+      if (!user || password !== user.password) {
+        throw new Error("Auth Problem");
       }
-    },
-  },
+
+      return user;
+    }
+  }
 };
 
 const server = new GraphQLServer({
-  typeDefs: './src/schema.graphql',
+  typeDefs: "./src/schema.graphql",
   resolvers,
+  context: request => {
+    return { ...request, prisma };
+  }
 });
 
 server.start(() => console.log(`Server on localhost:4000`));

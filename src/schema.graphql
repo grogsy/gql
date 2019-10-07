@@ -1,32 +1,40 @@
 type Query {
     info: String!
     feed: [Link!]!
-    link(id: ID!): Link
     getUsers: [User!]!
+    getCommunitys: [Community!]!
 }
 
 type Mutation {
     post(url: String!, description: String!): Link!
+    createUser(username: String!, firstName: String!, lastName: String!, email: String!, password: String!) : User
+    login(email: String!, password: String!) : User #AuthPayload
+    createCommunity(name: String!, category: String!, hasPosts: Boolean!, hasMessages: Boolean!, privacy: String!) : Community
     updateLink(id: ID!, url: String, description: String) : Link
     deleteLink(id: ID!) : Link
-    signup(firstName: String!, lastName: String!, email: String!, password: String!) : User
+}
+
+type AuthPayload {
+    token: String
+    user: User
 }
 
 type Link {
     id: ID!
     description: String!
     url: String!
+    postedBy: User
 }
 
 type User {
     firstName: String!
     lastName: String!
-    email: String!
-    username: String!
+    email: String! 
+    username: String! 
     password: String!
     messages: [Message!]
     communities: [Community!]
-    posts: [Post!]!    
+    posts: [Post!]
 }
 
 type Community {

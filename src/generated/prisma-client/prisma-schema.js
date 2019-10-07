@@ -392,6 +392,7 @@ type Link {
   createdAt: DateTime!
   description: String!
   url: String!
+  postedBy: User
 }
 
 type LinkConnection {
@@ -404,6 +405,7 @@ input LinkCreateInput {
   id: ID
   description: String!
   url: String!
+  postedBy: UserCreateOneInput
 }
 
 type LinkEdge {
@@ -450,6 +452,7 @@ input LinkSubscriptionWhereInput {
 input LinkUpdateInput {
   description: String
   url: String
+  postedBy: UserUpdateOneInput
 }
 
 input LinkUpdateManyMutationInput {
@@ -508,6 +511,7 @@ input LinkWhereInput {
   url_not_starts_with: String
   url_ends_with: String
   url_not_ends_with: String
+  postedBy: UserWhereInput
   AND: [LinkWhereInput!]
   OR: [LinkWhereInput!]
   NOT: [LinkWhereInput!]
@@ -1082,6 +1086,11 @@ input UserCreateManyWithoutCommunitiesInput {
   connect: [UserWhereUniqueInput!]
 }
 
+input UserCreateOneInput {
+  create: UserCreateInput
+  connect: UserWhereUniqueInput
+}
+
 input UserCreateOneWithoutMessagesInput {
   create: UserCreateWithoutMessagesInput
   connect: UserWhereUniqueInput
@@ -1262,6 +1271,17 @@ input UserSubscriptionWhereInput {
   NOT: [UserSubscriptionWhereInput!]
 }
 
+input UserUpdateDataInput {
+  firstName: String
+  lastName: String
+  email: String
+  username: String
+  password: String
+  messages: MessageUpdateManyWithoutSenderInput
+  communities: CommunityUpdateManyWithoutUsersInput
+  posts: PostUpdateManyWithoutUserInput
+}
+
 input UserUpdateInput {
   firstName: String
   lastName: String
@@ -1304,6 +1324,15 @@ input UserUpdateManyWithoutCommunitiesInput {
 input UserUpdateManyWithWhereNestedInput {
   where: UserScalarWhereInput!
   data: UserUpdateManyDataInput!
+}
+
+input UserUpdateOneInput {
+  create: UserCreateInput
+  update: UserUpdateDataInput
+  upsert: UserUpsertNestedInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: UserWhereUniqueInput
 }
 
 input UserUpdateOneRequiredWithoutMessagesInput {
@@ -1353,6 +1382,11 @@ input UserUpdateWithoutPostsDataInput {
 input UserUpdateWithWhereUniqueWithoutCommunitiesInput {
   where: UserWhereUniqueInput!
   data: UserUpdateWithoutCommunitiesDataInput!
+}
+
+input UserUpsertNestedInput {
+  update: UserUpdateDataInput!
+  create: UserCreateInput!
 }
 
 input UserUpsertWithoutMessagesInput {
@@ -1473,6 +1507,7 @@ input UserWhereInput {
 input UserWhereUniqueInput {
   id: ID
   email: String
+  username: String
 }
 `
       }

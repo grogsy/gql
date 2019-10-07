@@ -307,7 +307,43 @@ export type LinkOrderByInput =
 
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
-export interface CommunityUpdateDataInput {
+export interface UserUpdateWithWhereUniqueWithoutCommunitiesInput {
+  where: UserWhereUniqueInput;
+  data: UserUpdateWithoutCommunitiesDataInput;
+}
+
+export type CommunityWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export interface CommunityCreateOneWithoutPostsInput {
+  create?: Maybe<CommunityCreateWithoutPostsInput>;
+  connect?: Maybe<CommunityWhereUniqueInput>;
+}
+
+export interface LinkCreateInput {
+  id?: Maybe<ID_Input>;
+  description: String;
+  url: String;
+  postedBy?: Maybe<UserCreateOneInput>;
+}
+
+export interface CommunityCreateWithoutPostsInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+  category: String;
+  users?: Maybe<UserCreateManyWithoutCommunitiesInput>;
+  hasPosts: Boolean;
+  hasMessages: Boolean;
+  privacy: String;
+}
+
+export interface PostUpdateWithoutUserDataInput {
+  text?: Maybe<String>;
+  community?: Maybe<CommunityUpdateOneRequiredWithoutPostsInput>;
+}
+
+export interface CommunityUpdateInput {
   name?: Maybe<String>;
   category?: Maybe<String>;
   posts?: Maybe<PostUpdateManyWithoutCommunityInput>;
@@ -315,51 +351,6 @@ export interface CommunityUpdateDataInput {
   hasPosts?: Maybe<Boolean>;
   hasMessages?: Maybe<Boolean>;
   privacy?: Maybe<String>;
-}
-
-export type CommunityWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-}>;
-
-export interface PostCreateManyWithoutUserInput {
-  create?: Maybe<PostCreateWithoutUserInput[] | PostCreateWithoutUserInput>;
-  connect?: Maybe<PostWhereUniqueInput[] | PostWhereUniqueInput>;
-}
-
-export interface UserUpsertWithoutPostsInput {
-  update: UserUpdateWithoutPostsDataInput;
-  create: UserCreateWithoutPostsInput;
-}
-
-export interface PostCreateWithoutUserInput {
-  id?: Maybe<ID_Input>;
-  text: String;
-  community: CommunityCreateOneWithoutPostsInput;
-}
-
-export interface PostUpdateManyWithoutUserInput {
-  create?: Maybe<PostCreateWithoutUserInput[] | PostCreateWithoutUserInput>;
-  delete?: Maybe<PostWhereUniqueInput[] | PostWhereUniqueInput>;
-  connect?: Maybe<PostWhereUniqueInput[] | PostWhereUniqueInput>;
-  set?: Maybe<PostWhereUniqueInput[] | PostWhereUniqueInput>;
-  disconnect?: Maybe<PostWhereUniqueInput[] | PostWhereUniqueInput>;
-  update?: Maybe<
-    | PostUpdateWithWhereUniqueWithoutUserInput[]
-    | PostUpdateWithWhereUniqueWithoutUserInput
-  >;
-  upsert?: Maybe<
-    | PostUpsertWithWhereUniqueWithoutUserInput[]
-    | PostUpsertWithWhereUniqueWithoutUserInput
-  >;
-  deleteMany?: Maybe<PostScalarWhereInput[] | PostScalarWhereInput>;
-  updateMany?: Maybe<
-    PostUpdateManyWithWhereNestedInput[] | PostUpdateManyWithWhereNestedInput
-  >;
-}
-
-export interface CommunityCreateOneWithoutPostsInput {
-  create?: Maybe<CommunityCreateWithoutPostsInput>;
-  connect?: Maybe<CommunityWhereUniqueInput>;
 }
 
 export interface PostSubscriptionWhereInput {
@@ -373,14 +364,26 @@ export interface PostSubscriptionWhereInput {
   NOT?: Maybe<PostSubscriptionWhereInput[] | PostSubscriptionWhereInput>;
 }
 
-export interface CommunityCreateWithoutPostsInput {
-  id?: Maybe<ID_Input>;
-  name: String;
-  category: String;
-  users?: Maybe<UserCreateManyWithoutCommunitiesInput>;
-  hasPosts: Boolean;
-  hasMessages: Boolean;
-  privacy: String;
+export interface PostUpdateManyWithoutCommunityInput {
+  create?: Maybe<
+    PostCreateWithoutCommunityInput[] | PostCreateWithoutCommunityInput
+  >;
+  delete?: Maybe<PostWhereUniqueInput[] | PostWhereUniqueInput>;
+  connect?: Maybe<PostWhereUniqueInput[] | PostWhereUniqueInput>;
+  set?: Maybe<PostWhereUniqueInput[] | PostWhereUniqueInput>;
+  disconnect?: Maybe<PostWhereUniqueInput[] | PostWhereUniqueInput>;
+  update?: Maybe<
+    | PostUpdateWithWhereUniqueWithoutCommunityInput[]
+    | PostUpdateWithWhereUniqueWithoutCommunityInput
+  >;
+  upsert?: Maybe<
+    | PostUpsertWithWhereUniqueWithoutCommunityInput[]
+    | PostUpsertWithWhereUniqueWithoutCommunityInput
+  >;
+  deleteMany?: Maybe<PostScalarWhereInput[] | PostScalarWhereInput>;
+  updateMany?: Maybe<
+    PostUpdateManyWithWhereNestedInput[] | PostUpdateManyWithWhereNestedInput
+  >;
 }
 
 export interface UserWhereInput {
@@ -482,14 +485,9 @@ export interface UserWhereInput {
   NOT?: Maybe<UserWhereInput[] | UserWhereInput>;
 }
 
-export interface CommunityUpdateInput {
-  name?: Maybe<String>;
-  category?: Maybe<String>;
-  posts?: Maybe<PostUpdateManyWithoutCommunityInput>;
-  users?: Maybe<UserUpdateManyWithoutCommunitiesInput>;
-  hasPosts?: Maybe<Boolean>;
-  hasMessages?: Maybe<Boolean>;
-  privacy?: Maybe<String>;
+export interface PostUpdateWithWhereUniqueWithoutCommunityInput {
+  where: PostWhereUniqueInput;
+  data: PostUpdateWithoutCommunityDataInput;
 }
 
 export interface CommunityWhereInput {
@@ -564,26 +562,9 @@ export interface CommunityWhereInput {
   NOT?: Maybe<CommunityWhereInput[] | CommunityWhereInput>;
 }
 
-export interface PostUpdateManyWithoutCommunityInput {
-  create?: Maybe<
-    PostCreateWithoutCommunityInput[] | PostCreateWithoutCommunityInput
-  >;
-  delete?: Maybe<PostWhereUniqueInput[] | PostWhereUniqueInput>;
-  connect?: Maybe<PostWhereUniqueInput[] | PostWhereUniqueInput>;
-  set?: Maybe<PostWhereUniqueInput[] | PostWhereUniqueInput>;
-  disconnect?: Maybe<PostWhereUniqueInput[] | PostWhereUniqueInput>;
-  update?: Maybe<
-    | PostUpdateWithWhereUniqueWithoutCommunityInput[]
-    | PostUpdateWithWhereUniqueWithoutCommunityInput
-  >;
-  upsert?: Maybe<
-    | PostUpsertWithWhereUniqueWithoutCommunityInput[]
-    | PostUpsertWithWhereUniqueWithoutCommunityInput
-  >;
-  deleteMany?: Maybe<PostScalarWhereInput[] | PostScalarWhereInput>;
-  updateMany?: Maybe<
-    PostUpdateManyWithWhereNestedInput[] | PostUpdateManyWithWhereNestedInput
-  >;
+export interface PostUpdateWithoutCommunityDataInput {
+  text?: Maybe<String>;
+  user?: Maybe<UserUpdateOneRequiredWithoutPostsInput>;
 }
 
 export interface CommunitySubscriptionWhereInput {
@@ -603,9 +584,11 @@ export interface CommunitySubscriptionWhereInput {
   >;
 }
 
-export interface PostUpdateWithWhereUniqueWithoutCommunityInput {
-  where: PostWhereUniqueInput;
-  data: PostUpdateWithoutCommunityDataInput;
+export interface UserUpdateOneRequiredWithoutPostsInput {
+  create?: Maybe<UserCreateWithoutPostsInput>;
+  update?: Maybe<UserUpdateWithoutPostsDataInput>;
+  upsert?: Maybe<UserUpsertWithoutPostsInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
 }
 
 export interface UserUpdateInput {
@@ -619,28 +602,6 @@ export interface UserUpdateInput {
   posts?: Maybe<PostUpdateManyWithoutUserInput>;
 }
 
-export interface PostUpdateWithoutCommunityDataInput {
-  text?: Maybe<String>;
-  user?: Maybe<UserUpdateOneRequiredWithoutPostsInput>;
-}
-
-export type LinkWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-}>;
-
-export interface UserUpdateOneRequiredWithoutPostsInput {
-  create?: Maybe<UserCreateWithoutPostsInput>;
-  update?: Maybe<UserUpdateWithoutPostsDataInput>;
-  upsert?: Maybe<UserUpsertWithoutPostsInput>;
-  connect?: Maybe<UserWhereUniqueInput>;
-}
-
-export interface PostUpdateInput {
-  text?: Maybe<String>;
-  community?: Maybe<CommunityUpdateOneRequiredWithoutPostsInput>;
-  user?: Maybe<UserUpdateOneRequiredWithoutPostsInput>;
-}
-
 export interface UserUpdateWithoutPostsDataInput {
   firstName?: Maybe<String>;
   lastName?: Maybe<String>;
@@ -651,12 +612,9 @@ export interface UserUpdateWithoutPostsDataInput {
   communities?: Maybe<CommunityUpdateManyWithoutUsersInput>;
 }
 
-export interface PostCreateInput {
-  id?: Maybe<ID_Input>;
-  text: String;
-  community: CommunityCreateOneWithoutPostsInput;
-  user: UserCreateOneWithoutPostsInput;
-}
+export type LinkWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
 
 export interface MessageUpdateManyWithoutSenderInput {
   create?: Maybe<
@@ -681,9 +639,11 @@ export interface MessageUpdateManyWithoutSenderInput {
   >;
 }
 
-export interface UserUpsertWithoutMessagesInput {
-  update: UserUpdateWithoutMessagesDataInput;
-  create: UserCreateWithoutMessagesInput;
+export interface PostCreateInput {
+  id?: Maybe<ID_Input>;
+  text: String;
+  community: CommunityCreateOneWithoutPostsInput;
+  user: UserCreateOneWithoutPostsInput;
 }
 
 export interface MessageUpdateWithWhereUniqueWithoutSenderInput {
@@ -691,9 +651,10 @@ export interface MessageUpdateWithWhereUniqueWithoutSenderInput {
   data: MessageUpdateWithoutSenderDataInput;
 }
 
-export type MessageWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-}>;
+export interface MessageUpdateManyMutationInput {
+  recip?: Maybe<String>;
+  content?: Maybe<String>;
+}
 
 export interface MessageUpdateWithoutSenderDataInput {
   recip?: Maybe<String>;
@@ -701,11 +662,14 @@ export interface MessageUpdateWithoutSenderDataInput {
   community?: Maybe<CommunityUpdateOneRequiredInput>;
 }
 
-export interface MessageUpdateInput {
-  sender?: Maybe<UserUpdateOneRequiredWithoutMessagesInput>;
-  recip?: Maybe<String>;
-  content?: Maybe<String>;
-  community?: Maybe<CommunityUpdateOneRequiredInput>;
+export interface UserUpdateWithoutMessagesDataInput {
+  firstName?: Maybe<String>;
+  lastName?: Maybe<String>;
+  email?: Maybe<String>;
+  username?: Maybe<String>;
+  password?: Maybe<String>;
+  communities?: Maybe<CommunityUpdateManyWithoutUsersInput>;
+  posts?: Maybe<PostUpdateManyWithoutUserInput>;
 }
 
 export interface CommunityUpdateOneRequiredInput {
@@ -715,22 +679,29 @@ export interface CommunityUpdateOneRequiredInput {
   connect?: Maybe<CommunityWhereUniqueInput>;
 }
 
-export type PostWhereUniqueInput = AtLeastOne<{
+export type MessageWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
 }>;
 
-export interface PostUpsertWithWhereUniqueWithoutCommunityInput {
-  where: PostWhereUniqueInput;
-  update: PostUpdateWithoutCommunityDataInput;
-  create: PostCreateWithoutCommunityInput;
+export interface CommunityUpdateDataInput {
+  name?: Maybe<String>;
+  category?: Maybe<String>;
+  posts?: Maybe<PostUpdateManyWithoutCommunityInput>;
+  users?: Maybe<UserUpdateManyWithoutCommunitiesInput>;
+  hasPosts?: Maybe<Boolean>;
+  hasMessages?: Maybe<Boolean>;
+  privacy?: Maybe<String>;
 }
 
-export interface MessageCreateInput {
+export interface UserCreateWithoutMessagesInput {
   id?: Maybe<ID_Input>;
-  sender: UserCreateOneWithoutMessagesInput;
-  recip: String;
-  content: String;
-  community: CommunityCreateOneInput;
+  firstName: String;
+  lastName: String;
+  email: String;
+  username: String;
+  password: String;
+  communities?: Maybe<CommunityCreateManyWithoutUsersInput>;
+  posts?: Maybe<PostCreateManyWithoutUserInput>;
 }
 
 export interface UserUpdateManyWithoutCommunitiesInput {
@@ -755,20 +726,25 @@ export interface UserUpdateManyWithoutCommunitiesInput {
   >;
 }
 
-export type UserWhereUniqueInput = AtLeastOne<{
+export type PostWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
-  email?: Maybe<String>;
 }>;
 
-export interface UserUpdateWithWhereUniqueWithoutCommunitiesInput {
-  where: UserWhereUniqueInput;
-  data: UserUpdateWithoutCommunitiesDataInput;
+export interface UserCreateInput {
+  id?: Maybe<ID_Input>;
+  firstName: String;
+  lastName: String;
+  email: String;
+  username: String;
+  password: String;
+  messages?: Maybe<MessageCreateManyWithoutSenderInput>;
+  communities?: Maybe<CommunityCreateManyWithoutUsersInput>;
+  posts?: Maybe<PostCreateManyWithoutUserInput>;
 }
 
-export interface LinkCreateInput {
-  id?: Maybe<ID_Input>;
-  description: String;
-  url: String;
+export interface LinkUpdateManyMutationInput {
+  description?: Maybe<String>;
+  url?: Maybe<String>;
 }
 
 export interface UserUpdateWithoutCommunitiesDataInput {
@@ -779,6 +755,46 @@ export interface UserUpdateWithoutCommunitiesDataInput {
   password?: Maybe<String>;
   messages?: Maybe<MessageUpdateManyWithoutSenderInput>;
   posts?: Maybe<PostUpdateManyWithoutUserInput>;
+}
+
+export type UserWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+  email?: Maybe<String>;
+  username?: Maybe<String>;
+}>;
+
+export interface PostUpdateManyWithoutUserInput {
+  create?: Maybe<PostCreateWithoutUserInput[] | PostCreateWithoutUserInput>;
+  delete?: Maybe<PostWhereUniqueInput[] | PostWhereUniqueInput>;
+  connect?: Maybe<PostWhereUniqueInput[] | PostWhereUniqueInput>;
+  set?: Maybe<PostWhereUniqueInput[] | PostWhereUniqueInput>;
+  disconnect?: Maybe<PostWhereUniqueInput[] | PostWhereUniqueInput>;
+  update?: Maybe<
+    | PostUpdateWithWhereUniqueWithoutUserInput[]
+    | PostUpdateWithWhereUniqueWithoutUserInput
+  >;
+  upsert?: Maybe<
+    | PostUpsertWithWhereUniqueWithoutUserInput[]
+    | PostUpsertWithWhereUniqueWithoutUserInput
+  >;
+  deleteMany?: Maybe<PostScalarWhereInput[] | PostScalarWhereInput>;
+  updateMany?: Maybe<
+    PostUpdateManyWithWhereNestedInput[] | PostUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface UserUpdateOneInput {
+  create?: Maybe<UserCreateInput>;
+  update?: Maybe<UserUpdateDataInput>;
+  upsert?: Maybe<UserUpsertNestedInput>;
+  delete?: Maybe<Boolean>;
+  disconnect?: Maybe<Boolean>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface PostUpdateWithWhereUniqueWithoutUserInput {
+  where: PostWhereUniqueInput;
+  data: PostUpdateWithoutUserDataInput;
 }
 
 export interface PostCreateManyWithoutCommunityInput {
@@ -843,9 +859,11 @@ export interface UserCreateOneWithoutPostsInput {
   connect?: Maybe<UserWhereUniqueInput>;
 }
 
-export interface PostUpdateWithWhereUniqueWithoutUserInput {
-  where: PostWhereUniqueInput;
-  data: PostUpdateWithoutUserDataInput;
+export interface CommunityUpdateOneRequiredWithoutPostsInput {
+  create?: Maybe<CommunityCreateWithoutPostsInput>;
+  update?: Maybe<CommunityUpdateWithoutPostsDataInput>;
+  upsert?: Maybe<CommunityUpsertWithoutPostsInput>;
+  connect?: Maybe<CommunityWhereUniqueInput>;
 }
 
 export interface MessageCreateManyWithoutSenderInput {
@@ -855,9 +873,13 @@ export interface MessageCreateManyWithoutSenderInput {
   connect?: Maybe<MessageWhereUniqueInput[] | MessageWhereUniqueInput>;
 }
 
-export interface PostUpdateWithoutUserDataInput {
-  text?: Maybe<String>;
-  community?: Maybe<CommunityUpdateOneRequiredWithoutPostsInput>;
+export interface CommunityUpdateWithoutPostsDataInput {
+  name?: Maybe<String>;
+  category?: Maybe<String>;
+  users?: Maybe<UserUpdateManyWithoutCommunitiesInput>;
+  hasPosts?: Maybe<Boolean>;
+  hasMessages?: Maybe<Boolean>;
+  privacy?: Maybe<String>;
 }
 
 export interface CommunityCreateOneInput {
@@ -865,11 +887,9 @@ export interface CommunityCreateOneInput {
   connect?: Maybe<CommunityWhereUniqueInput>;
 }
 
-export interface CommunityUpdateOneRequiredWithoutPostsInput {
-  create?: Maybe<CommunityCreateWithoutPostsInput>;
-  update?: Maybe<CommunityUpdateWithoutPostsDataInput>;
-  upsert?: Maybe<CommunityUpsertWithoutPostsInput>;
-  connect?: Maybe<CommunityWhereUniqueInput>;
+export interface CommunityUpsertWithoutPostsInput {
+  update: CommunityUpdateWithoutPostsDataInput;
+  create: CommunityCreateWithoutPostsInput;
 }
 
 export interface CommunityCreateWithoutUsersInput {
@@ -882,13 +902,10 @@ export interface CommunityCreateWithoutUsersInput {
   privacy: String;
 }
 
-export interface CommunityUpdateWithoutPostsDataInput {
-  name?: Maybe<String>;
-  category?: Maybe<String>;
-  users?: Maybe<UserUpdateManyWithoutCommunitiesInput>;
-  hasPosts?: Maybe<Boolean>;
-  hasMessages?: Maybe<Boolean>;
-  privacy?: Maybe<String>;
+export interface PostUpsertWithWhereUniqueWithoutUserInput {
+  where: PostWhereUniqueInput;
+  update: PostUpdateWithoutUserDataInput;
+  create: PostCreateWithoutUserInput;
 }
 
 export interface UserCreateWithoutCommunitiesInput {
@@ -902,9 +919,49 @@ export interface UserCreateWithoutCommunitiesInput {
   posts?: Maybe<PostCreateManyWithoutUserInput>;
 }
 
-export interface CommunityUpsertWithoutPostsInput {
-  update: CommunityUpdateWithoutPostsDataInput;
-  create: CommunityCreateWithoutPostsInput;
+export interface PostScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  text?: Maybe<String>;
+  text_not?: Maybe<String>;
+  text_in?: Maybe<String[] | String>;
+  text_not_in?: Maybe<String[] | String>;
+  text_lt?: Maybe<String>;
+  text_lte?: Maybe<String>;
+  text_gt?: Maybe<String>;
+  text_gte?: Maybe<String>;
+  text_contains?: Maybe<String>;
+  text_not_contains?: Maybe<String>;
+  text_starts_with?: Maybe<String>;
+  text_not_starts_with?: Maybe<String>;
+  text_ends_with?: Maybe<String>;
+  text_not_ends_with?: Maybe<String>;
+  AND?: Maybe<PostScalarWhereInput[] | PostScalarWhereInput>;
+  OR?: Maybe<PostScalarWhereInput[] | PostScalarWhereInput>;
+  NOT?: Maybe<PostScalarWhereInput[] | PostScalarWhereInput>;
+}
+
+export interface PostCreateWithoutUserInput {
+  id?: Maybe<ID_Input>;
+  text: String;
+  community: CommunityCreateOneWithoutPostsInput;
+}
+
+export interface PostUpdateManyWithWhereNestedInput {
+  where: PostScalarWhereInput;
+  data: PostUpdateManyDataInput;
 }
 
 export interface MessageSubscriptionWhereInput {
@@ -918,10 +975,8 @@ export interface MessageSubscriptionWhereInput {
   NOT?: Maybe<MessageSubscriptionWhereInput[] | MessageSubscriptionWhereInput>;
 }
 
-export interface PostUpsertWithWhereUniqueWithoutUserInput {
-  where: PostWhereUniqueInput;
-  update: PostUpdateWithoutUserDataInput;
-  create: PostCreateWithoutUserInput;
+export interface PostUpdateManyDataInput {
+  text?: Maybe<String>;
 }
 
 export interface PostWhereInput {
@@ -960,142 +1015,14 @@ export interface PostWhereInput {
   NOT?: Maybe<PostWhereInput[] | PostWhereInput>;
 }
 
-export interface PostScalarWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  text?: Maybe<String>;
-  text_not?: Maybe<String>;
-  text_in?: Maybe<String[] | String>;
-  text_not_in?: Maybe<String[] | String>;
-  text_lt?: Maybe<String>;
-  text_lte?: Maybe<String>;
-  text_gt?: Maybe<String>;
-  text_gte?: Maybe<String>;
-  text_contains?: Maybe<String>;
-  text_not_contains?: Maybe<String>;
-  text_starts_with?: Maybe<String>;
-  text_not_starts_with?: Maybe<String>;
-  text_ends_with?: Maybe<String>;
-  text_not_ends_with?: Maybe<String>;
-  AND?: Maybe<PostScalarWhereInput[] | PostScalarWhereInput>;
-  OR?: Maybe<PostScalarWhereInput[] | PostScalarWhereInput>;
-  NOT?: Maybe<PostScalarWhereInput[] | PostScalarWhereInput>;
-}
-
-export interface UserCreateInput {
-  id?: Maybe<ID_Input>;
-  firstName: String;
-  lastName: String;
-  email: String;
-  username: String;
-  password: String;
-  messages?: Maybe<MessageCreateManyWithoutSenderInput>;
-  communities?: Maybe<CommunityCreateManyWithoutUsersInput>;
-  posts?: Maybe<PostCreateManyWithoutUserInput>;
-}
-
-export interface PostUpdateManyWithWhereNestedInput {
-  where: PostScalarWhereInput;
-  data: PostUpdateManyDataInput;
-}
-
-export interface LinkWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  createdAt?: Maybe<DateTimeInput>;
-  createdAt_not?: Maybe<DateTimeInput>;
-  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_lt?: Maybe<DateTimeInput>;
-  createdAt_lte?: Maybe<DateTimeInput>;
-  createdAt_gt?: Maybe<DateTimeInput>;
-  createdAt_gte?: Maybe<DateTimeInput>;
-  description?: Maybe<String>;
-  description_not?: Maybe<String>;
-  description_in?: Maybe<String[] | String>;
-  description_not_in?: Maybe<String[] | String>;
-  description_lt?: Maybe<String>;
-  description_lte?: Maybe<String>;
-  description_gt?: Maybe<String>;
-  description_gte?: Maybe<String>;
-  description_contains?: Maybe<String>;
-  description_not_contains?: Maybe<String>;
-  description_starts_with?: Maybe<String>;
-  description_not_starts_with?: Maybe<String>;
-  description_ends_with?: Maybe<String>;
-  description_not_ends_with?: Maybe<String>;
-  url?: Maybe<String>;
-  url_not?: Maybe<String>;
-  url_in?: Maybe<String[] | String>;
-  url_not_in?: Maybe<String[] | String>;
-  url_lt?: Maybe<String>;
-  url_lte?: Maybe<String>;
-  url_gt?: Maybe<String>;
-  url_gte?: Maybe<String>;
-  url_contains?: Maybe<String>;
-  url_not_contains?: Maybe<String>;
-  url_starts_with?: Maybe<String>;
-  url_not_starts_with?: Maybe<String>;
-  url_ends_with?: Maybe<String>;
-  url_not_ends_with?: Maybe<String>;
-  AND?: Maybe<LinkWhereInput[] | LinkWhereInput>;
-  OR?: Maybe<LinkWhereInput[] | LinkWhereInput>;
-  NOT?: Maybe<LinkWhereInput[] | LinkWhereInput>;
-}
-
-export interface PostUpdateManyDataInput {
-  text?: Maybe<String>;
-}
-
-export interface UserUpdateWithoutMessagesDataInput {
-  firstName?: Maybe<String>;
-  lastName?: Maybe<String>;
-  email?: Maybe<String>;
-  username?: Maybe<String>;
-  password?: Maybe<String>;
-  communities?: Maybe<CommunityUpdateManyWithoutUsersInput>;
-  posts?: Maybe<PostUpdateManyWithoutUserInput>;
-}
-
 export interface UserUpsertWithWhereUniqueWithoutCommunitiesInput {
   where: UserWhereUniqueInput;
   update: UserUpdateWithoutCommunitiesDataInput;
   create: UserCreateWithoutCommunitiesInput;
 }
 
-export interface UserCreateWithoutMessagesInput {
-  id?: Maybe<ID_Input>;
-  firstName: String;
-  lastName: String;
-  email: String;
-  username: String;
-  password: String;
-  communities?: Maybe<CommunityCreateManyWithoutUsersInput>;
-  posts?: Maybe<PostCreateManyWithoutUserInput>;
+export interface PostUpdateManyMutationInput {
+  text?: Maybe<String>;
 }
 
 export interface UserScalarWhereInput {
@@ -1188,9 +1115,61 @@ export interface UserScalarWhereInput {
   NOT?: Maybe<UserScalarWhereInput[] | UserScalarWhereInput>;
 }
 
-export interface LinkUpdateManyMutationInput {
+export interface LinkWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
   description?: Maybe<String>;
+  description_not?: Maybe<String>;
+  description_in?: Maybe<String[] | String>;
+  description_not_in?: Maybe<String[] | String>;
+  description_lt?: Maybe<String>;
+  description_lte?: Maybe<String>;
+  description_gt?: Maybe<String>;
+  description_gte?: Maybe<String>;
+  description_contains?: Maybe<String>;
+  description_not_contains?: Maybe<String>;
+  description_starts_with?: Maybe<String>;
+  description_not_starts_with?: Maybe<String>;
+  description_ends_with?: Maybe<String>;
+  description_not_ends_with?: Maybe<String>;
   url?: Maybe<String>;
+  url_not?: Maybe<String>;
+  url_in?: Maybe<String[] | String>;
+  url_not_in?: Maybe<String[] | String>;
+  url_lt?: Maybe<String>;
+  url_lte?: Maybe<String>;
+  url_gt?: Maybe<String>;
+  url_gte?: Maybe<String>;
+  url_contains?: Maybe<String>;
+  url_not_contains?: Maybe<String>;
+  url_starts_with?: Maybe<String>;
+  url_not_starts_with?: Maybe<String>;
+  url_ends_with?: Maybe<String>;
+  url_not_ends_with?: Maybe<String>;
+  postedBy?: Maybe<UserWhereInput>;
+  AND?: Maybe<LinkWhereInput[] | LinkWhereInput>;
+  OR?: Maybe<LinkWhereInput[] | LinkWhereInput>;
+  NOT?: Maybe<LinkWhereInput[] | LinkWhereInput>;
 }
 
 export interface UserUpdateManyWithWhereNestedInput {
@@ -1198,12 +1177,11 @@ export interface UserUpdateManyWithWhereNestedInput {
   data: UserUpdateManyDataInput;
 }
 
-export interface CommunityUpdateManyMutationInput {
-  name?: Maybe<String>;
-  category?: Maybe<String>;
-  hasPosts?: Maybe<Boolean>;
-  hasMessages?: Maybe<Boolean>;
-  privacy?: Maybe<String>;
+export interface UserUpdateOneRequiredWithoutMessagesInput {
+  create?: Maybe<UserCreateWithoutMessagesInput>;
+  update?: Maybe<UserUpdateWithoutMessagesDataInput>;
+  upsert?: Maybe<UserUpsertWithoutMessagesInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
 }
 
 export interface UserUpdateManyDataInput {
@@ -1214,10 +1192,9 @@ export interface UserUpdateManyDataInput {
   password?: Maybe<String>;
 }
 
-export interface PostCreateWithoutCommunityInput {
-  id?: Maybe<ID_Input>;
-  text: String;
-  user: UserCreateOneWithoutPostsInput;
+export interface UserCreateOneWithoutMessagesInput {
+  create?: Maybe<UserCreateWithoutMessagesInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
 }
 
 export interface CommunityUpsertNestedInput {
@@ -1225,11 +1202,9 @@ export interface CommunityUpsertNestedInput {
   create: CommunityCreateInput;
 }
 
-export interface MessageCreateWithoutSenderInput {
-  id?: Maybe<ID_Input>;
-  recip: String;
-  content: String;
-  community: CommunityCreateOneInput;
+export interface UserUpsertNestedInput {
+  update: UserUpdateDataInput;
+  create: UserCreateInput;
 }
 
 export interface MessageUpsertWithWhereUniqueWithoutSenderInput {
@@ -1238,11 +1213,10 @@ export interface MessageUpsertWithWhereUniqueWithoutSenderInput {
   create: MessageCreateWithoutSenderInput;
 }
 
-export interface UserCreateManyWithoutCommunitiesInput {
-  create?: Maybe<
-    UserCreateWithoutCommunitiesInput[] | UserCreateWithoutCommunitiesInput
-  >;
-  connect?: Maybe<UserWhereUniqueInput[] | UserWhereUniqueInput>;
+export interface LinkUpdateInput {
+  description?: Maybe<String>;
+  url?: Maybe<String>;
+  postedBy?: Maybe<UserUpdateOneInput>;
 }
 
 export interface MessageScalarWhereInput {
@@ -1293,15 +1267,10 @@ export interface MessageScalarWhereInput {
   NOT?: Maybe<MessageScalarWhereInput[] | MessageScalarWhereInput>;
 }
 
-export interface LinkSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<LinkWhereInput>;
-  AND?: Maybe<LinkSubscriptionWhereInput[] | LinkSubscriptionWhereInput>;
-  OR?: Maybe<LinkSubscriptionWhereInput[] | LinkSubscriptionWhereInput>;
-  NOT?: Maybe<LinkSubscriptionWhereInput[] | LinkSubscriptionWhereInput>;
+export interface PostCreateWithoutCommunityInput {
+  id?: Maybe<ID_Input>;
+  text: String;
+  user: UserCreateOneWithoutPostsInput;
 }
 
 export interface MessageUpdateManyWithWhereNestedInput {
@@ -1309,8 +1278,11 @@ export interface MessageUpdateManyWithWhereNestedInput {
   data: MessageUpdateManyDataInput;
 }
 
-export interface PostUpdateManyMutationInput {
-  text?: Maybe<String>;
+export interface MessageCreateWithoutSenderInput {
+  id?: Maybe<ID_Input>;
+  recip: String;
+  content: String;
+  community: CommunityCreateOneInput;
 }
 
 export interface MessageUpdateManyDataInput {
@@ -1318,11 +1290,11 @@ export interface MessageUpdateManyDataInput {
   content?: Maybe<String>;
 }
 
-export interface UserUpdateOneRequiredWithoutMessagesInput {
-  create?: Maybe<UserCreateWithoutMessagesInput>;
-  update?: Maybe<UserUpdateWithoutMessagesDataInput>;
-  upsert?: Maybe<UserUpsertWithoutMessagesInput>;
-  connect?: Maybe<UserWhereUniqueInput>;
+export interface UserCreateManyWithoutCommunitiesInput {
+  create?: Maybe<
+    UserCreateWithoutCommunitiesInput[] | UserCreateWithoutCommunitiesInput
+  >;
+  connect?: Maybe<UserWhereUniqueInput[] | UserWhereUniqueInput>;
 }
 
 export interface CommunityUpdateManyWithoutUsersInput {
@@ -1348,36 +1320,6 @@ export interface CommunityUpdateManyWithoutUsersInput {
   >;
 }
 
-export interface LinkUpdateInput {
-  description?: Maybe<String>;
-  url?: Maybe<String>;
-}
-
-export interface CommunityUpdateWithWhereUniqueWithoutUsersInput {
-  where: CommunityWhereUniqueInput;
-  data: CommunityUpdateWithoutUsersDataInput;
-}
-
-export interface UserCreateWithoutPostsInput {
-  id?: Maybe<ID_Input>;
-  firstName: String;
-  lastName: String;
-  email: String;
-  username: String;
-  password: String;
-  messages?: Maybe<MessageCreateManyWithoutSenderInput>;
-  communities?: Maybe<CommunityCreateManyWithoutUsersInput>;
-}
-
-export interface CommunityUpdateWithoutUsersDataInput {
-  name?: Maybe<String>;
-  category?: Maybe<String>;
-  posts?: Maybe<PostUpdateManyWithoutCommunityInput>;
-  hasPosts?: Maybe<Boolean>;
-  hasMessages?: Maybe<Boolean>;
-  privacy?: Maybe<String>;
-}
-
 export interface UserSubscriptionWhereInput {
   mutation_in?: Maybe<MutationType[] | MutationType>;
   updatedFields_contains?: Maybe<String>;
@@ -1389,17 +1331,45 @@ export interface UserSubscriptionWhereInput {
   NOT?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
 }
 
-export interface CommunityUpdateManyDataInput {
+export interface CommunityUpdateWithWhereUniqueWithoutUsersInput {
+  where: CommunityWhereUniqueInput;
+  data: CommunityUpdateWithoutUsersDataInput;
+}
+
+export interface UserUpdateManyMutationInput {
+  firstName?: Maybe<String>;
+  lastName?: Maybe<String>;
+  email?: Maybe<String>;
+  username?: Maybe<String>;
+  password?: Maybe<String>;
+}
+
+export interface CommunityUpdateWithoutUsersDataInput {
   name?: Maybe<String>;
   category?: Maybe<String>;
+  posts?: Maybe<PostUpdateManyWithoutCommunityInput>;
   hasPosts?: Maybe<Boolean>;
   hasMessages?: Maybe<Boolean>;
   privacy?: Maybe<String>;
 }
 
-export interface CommunityUpdateManyWithWhereNestedInput {
-  where: CommunityScalarWhereInput;
-  data: CommunityUpdateManyDataInput;
+export interface UserUpsertWithoutMessagesInput {
+  update: UserUpdateWithoutMessagesDataInput;
+  create: UserCreateWithoutMessagesInput;
+}
+
+export interface CommunityUpsertWithWhereUniqueWithoutUsersInput {
+  where: CommunityWhereUniqueInput;
+  update: CommunityUpdateWithoutUsersDataInput;
+  create: CommunityCreateWithoutUsersInput;
+}
+
+export interface MessageCreateInput {
+  id?: Maybe<ID_Input>;
+  sender: UserCreateOneWithoutMessagesInput;
+  recip: String;
+  content: String;
+  community: CommunityCreateOneInput;
 }
 
 export interface CommunityScalarWhereInput {
@@ -1468,27 +1438,6 @@ export interface CommunityScalarWhereInput {
   NOT?: Maybe<CommunityScalarWhereInput[] | CommunityScalarWhereInput>;
 }
 
-export interface CommunityUpsertWithWhereUniqueWithoutUsersInput {
-  where: CommunityWhereUniqueInput;
-  update: CommunityUpdateWithoutUsersDataInput;
-  create: CommunityCreateWithoutUsersInput;
-}
-
-export interface UserUpdateManyMutationInput {
-  firstName?: Maybe<String>;
-  lastName?: Maybe<String>;
-  email?: Maybe<String>;
-  username?: Maybe<String>;
-  password?: Maybe<String>;
-}
-
-export interface CommunityCreateManyWithoutUsersInput {
-  create?: Maybe<
-    CommunityCreateWithoutUsersInput[] | CommunityCreateWithoutUsersInput
-  >;
-  connect?: Maybe<CommunityWhereUniqueInput[] | CommunityWhereUniqueInput>;
-}
-
 export interface CommunityCreateInput {
   id?: Maybe<ID_Input>;
   name: String;
@@ -1500,14 +1449,99 @@ export interface CommunityCreateInput {
   privacy: String;
 }
 
-export interface UserCreateOneWithoutMessagesInput {
-  create?: Maybe<UserCreateWithoutMessagesInput>;
+export interface CommunityUpdateManyWithWhereNestedInput {
+  where: CommunityScalarWhereInput;
+  data: CommunityUpdateManyDataInput;
+}
+
+export interface CommunityCreateManyWithoutUsersInput {
+  create?: Maybe<
+    CommunityCreateWithoutUsersInput[] | CommunityCreateWithoutUsersInput
+  >;
+  connect?: Maybe<CommunityWhereUniqueInput[] | CommunityWhereUniqueInput>;
+}
+
+export interface CommunityUpdateManyDataInput {
+  name?: Maybe<String>;
+  category?: Maybe<String>;
+  hasPosts?: Maybe<Boolean>;
+  hasMessages?: Maybe<Boolean>;
+  privacy?: Maybe<String>;
+}
+
+export interface LinkSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<LinkWhereInput>;
+  AND?: Maybe<LinkSubscriptionWhereInput[] | LinkSubscriptionWhereInput>;
+  OR?: Maybe<LinkSubscriptionWhereInput[] | LinkSubscriptionWhereInput>;
+  NOT?: Maybe<LinkSubscriptionWhereInput[] | LinkSubscriptionWhereInput>;
+}
+
+export interface UserCreateOneInput {
+  create?: Maybe<UserCreateInput>;
   connect?: Maybe<UserWhereUniqueInput>;
 }
 
-export interface MessageUpdateManyMutationInput {
+export interface CommunityUpdateManyMutationInput {
+  name?: Maybe<String>;
+  category?: Maybe<String>;
+  hasPosts?: Maybe<Boolean>;
+  hasMessages?: Maybe<Boolean>;
+  privacy?: Maybe<String>;
+}
+
+export interface PostUpsertWithWhereUniqueWithoutCommunityInput {
+  where: PostWhereUniqueInput;
+  update: PostUpdateWithoutCommunityDataInput;
+  create: PostCreateWithoutCommunityInput;
+}
+
+export interface UserUpsertWithoutPostsInput {
+  update: UserUpdateWithoutPostsDataInput;
+  create: UserCreateWithoutPostsInput;
+}
+
+export interface PostUpdateInput {
+  text?: Maybe<String>;
+  community?: Maybe<CommunityUpdateOneRequiredWithoutPostsInput>;
+  user?: Maybe<UserUpdateOneRequiredWithoutPostsInput>;
+}
+
+export interface PostCreateManyWithoutUserInput {
+  create?: Maybe<PostCreateWithoutUserInput[] | PostCreateWithoutUserInput>;
+  connect?: Maybe<PostWhereUniqueInput[] | PostWhereUniqueInput>;
+}
+
+export interface UserCreateWithoutPostsInput {
+  id?: Maybe<ID_Input>;
+  firstName: String;
+  lastName: String;
+  email: String;
+  username: String;
+  password: String;
+  messages?: Maybe<MessageCreateManyWithoutSenderInput>;
+  communities?: Maybe<CommunityCreateManyWithoutUsersInput>;
+}
+
+export interface UserUpdateDataInput {
+  firstName?: Maybe<String>;
+  lastName?: Maybe<String>;
+  email?: Maybe<String>;
+  username?: Maybe<String>;
+  password?: Maybe<String>;
+  messages?: Maybe<MessageUpdateManyWithoutSenderInput>;
+  communities?: Maybe<CommunityUpdateManyWithoutUsersInput>;
+  posts?: Maybe<PostUpdateManyWithoutUserInput>;
+}
+
+export interface MessageUpdateInput {
+  sender?: Maybe<UserUpdateOneRequiredWithoutMessagesInput>;
   recip?: Maybe<String>;
   content?: Maybe<String>;
+  community?: Maybe<CommunityUpdateOneRequiredInput>;
 }
 
 export interface NodeNode {
@@ -1612,6 +1646,7 @@ export interface LinkPromise extends Promise<Link>, Fragmentable {
   createdAt: () => Promise<DateTimeOutput>;
   description: () => Promise<String>;
   url: () => Promise<String>;
+  postedBy: <T = UserPromise>() => T;
 }
 
 export interface LinkSubscription
@@ -1621,6 +1656,7 @@ export interface LinkSubscription
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   description: () => Promise<AsyncIterator<String>>;
   url: () => Promise<AsyncIterator<String>>;
+  postedBy: <T = UserSubscription>() => T;
 }
 
 export interface LinkNullablePromise
@@ -1630,6 +1666,7 @@ export interface LinkNullablePromise
   createdAt: () => Promise<DateTimeOutput>;
   description: () => Promise<String>;
   url: () => Promise<String>;
+  postedBy: <T = UserPromise>() => T;
 }
 
 export interface AggregateCommunity {
@@ -1648,6 +1685,22 @@ export interface AggregateCommunitySubscription
   count: () => Promise<AsyncIterator<Int>>;
 }
 
+export interface BatchPayload {
+  count: Long;
+}
+
+export interface BatchPayloadPromise
+  extends Promise<BatchPayload>,
+    Fragmentable {
+  count: () => Promise<Long>;
+}
+
+export interface BatchPayloadSubscription
+  extends Promise<AsyncIterator<BatchPayload>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Long>>;
+}
+
 export interface AggregateUser {
   count: Int;
 }
@@ -1662,31 +1715,6 @@ export interface AggregateUserSubscription
   extends Promise<AsyncIterator<AggregateUser>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface UserSubscriptionPayload {
-  mutation: MutationType;
-  node: User;
-  updatedFields: String[];
-  previousValues: UserPreviousValues;
-}
-
-export interface UserSubscriptionPayloadPromise
-  extends Promise<UserSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = UserPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = UserPreviousValuesPromise>() => T;
-}
-
-export interface UserSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<UserSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = UserSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = UserPreviousValuesSubscription>() => T;
 }
 
 export interface CommunityEdge {
@@ -2373,20 +2401,29 @@ export interface AggregatePostSubscription
   count: () => Promise<AsyncIterator<Int>>;
 }
 
-export interface BatchPayload {
-  count: Long;
+export interface UserSubscriptionPayload {
+  mutation: MutationType;
+  node: User;
+  updatedFields: String[];
+  previousValues: UserPreviousValues;
 }
 
-export interface BatchPayloadPromise
-  extends Promise<BatchPayload>,
+export interface UserSubscriptionPayloadPromise
+  extends Promise<UserSubscriptionPayload>,
     Fragmentable {
-  count: () => Promise<Long>;
+  mutation: () => Promise<MutationType>;
+  node: <T = UserPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = UserPreviousValuesPromise>() => T;
 }
 
-export interface BatchPayloadSubscription
-  extends Promise<AsyncIterator<BatchPayload>>,
+export interface UserSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<UserSubscriptionPayload>>,
     Fragmentable {
-  count: () => Promise<AsyncIterator<Long>>;
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = UserSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = UserPreviousValuesSubscription>() => T;
 }
 
 /*
@@ -2394,13 +2431,13 @@ The `Boolean` scalar type represents `true` or `false`.
 */
 export type Boolean = boolean;
 
+export type Long = string;
+
 /*
 The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `"4"`) or integer (such as `4`) input value will be accepted as an ID.
 */
 export type ID_Input = string | number;
 export type ID_Output = string;
-
-export type Long = string;
 
 /*
 The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.
