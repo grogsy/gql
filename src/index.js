@@ -1,12 +1,8 @@
-const { GraphQLServer } = require("graphql-yoga");
-const { prisma } = require("./generated/prisma-client");
+const { GraphQLServer } = require('graphql-yoga');
+const { prisma } = require('./generated/prisma-client');
 
 const resolvers = {
   Query: {
-    info: () => "Example API",
-    feed: (root, args, ctx, info) => {
-      return ctx.prisma.links();
-    },
     getUsers: (root, args, ctx, info) => {
       return ctx.prisma.users();
     },
@@ -15,17 +11,19 @@ const resolvers = {
     },
     getPosts: (root, args, ctx, info) => {
       return ctx.prisma.posts();
-    }
+    },
+    community: (root, args, ctx, info) => {
+      return ctx.prisma.community({ name: args.name });
+    },
+    post: (root, args, ctx, info) => {
+      return ctx.prisma.post({ id: args.id });
+    },
+    user: (root, args, ctx, info) => {
+      return ctx.prisma.user({ username: args.username });
+    },
   },
 
   Mutation: {
-    post: (root, args, ctx) => {
-      const { url, description } = args;
-      return ctx.prisma.createLink({
-        url,
-        description
-      });
-    },
     createUser: (root, args, ctx) => {
       const { firstName, lastName, email, password, username } = args;
       return ctx.prisma.createUser({
@@ -33,7 +31,7 @@ const resolvers = {
         lastName,
         email,
         password,
-        username
+        username,
       });
     },
     createCommunity: (root, args, ctx) => {
@@ -43,7 +41,7 @@ const resolvers = {
         category,
         hasMessages,
         hasPosts,
-        privacy
+        privacy,
       });
     },
     login: async (parent, args, ctx, info) => {
@@ -51,7 +49,7 @@ const resolvers = {
       const user = await ctx.prisma.user({ email });
 
       if (!user || password !== user.password) {
-        throw new Error("Auth Problem");
+        throw new Error('Auth Problem');
       }
 
       return user;
@@ -62,25 +60,51 @@ const resolvers = {
       return ctx.prisma.createPost({
         content,
         user: { connect: { id: user } },
-        community: { connect: { id: community } }
+        community: { connect: { id: community } },
       });
-    }
+    },
   },
 
   User: {
     posts: (parent, args, ctx) => {
       const { id } = parent;
       return ctx.prisma.user({ id }).posts();
-    }
-  }
+    },
+    communities: (parent, args, ctx) => {
+      const { id } = parent;
+      return ctx.prisma.user({ id }).communities();
+    },
+  },
+
+  Post: {
+    community: (parent, args, ctx) => {
+      const { id } = parent;
+      return ctx.prisma.post({ id }).community();
+    },
+    user: (parent, args, ctx) => {
+      const { id } = parent;
+      return ctx.prisma.post({ id }).user();
+    },
+  },
+
+  Community: {
+    posts: (parent, args, ctx) => {
+      const { id } = parent;
+      return ctx.prisma.community({ id }).posts();
+    },
+    users: (parent, args, ctx) => {
+      const { id } = parent;
+      return ctx.prisma.community({ id }).users();
+    },
+  },
 };
 
 const server = new GraphQLServer({
-  typeDefs: "./src/schema.graphql",
+  typeDefs: './src/schema.graphql',
   resolvers,
   context: request => {
     return { ...request, prisma };
-  }
+  },
 });
 
 server.start(() => console.log(`Server on localhost:4000`));
